@@ -1,4 +1,4 @@
-## React + Redux + Express + Mongodb + socket.io
+## React + Redux + Express + Mysql + socket.io
 
 #### 页面搭建
 - [x] 环境搭建
