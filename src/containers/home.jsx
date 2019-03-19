@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
 import Axios from 'axios';
+import { connect } from 'react-redux';
+import { add,remove} from "reduxs/demo";
 
-export default class Home extends Component {
+// const mapStatetoProps = (state)=>{
+//     return {initData:state}
+// } 
+// const actionCreators = {add,remove};
+// Home = connect(mapStatetoProps,actionCreators)(Home);
+@connect(
+    state=>({initData:state}),
+    {add,remove}
+)
+class Home extends Component {
     componentDidMount = () => {
         // const p = Promise.resolve(this.getList);
         // p.then(res=>{console.log('res', res)});
@@ -43,16 +54,17 @@ export default class Home extends Component {
         })
     }
     render() {
-        const store = this.props.store;
-        const initData = store.getState();
+        const initData = this.props.initData;
         const add = this.props.add;
         const remove = this.props.remove;
+        console.log(initData)
         return (
             <div>
                 <h1>{initData}</h1>
-                <button onClick={() => store.dispatch(add())}>+</button>
-                <button onClick={() => store.dispatch(remove())}>-</button>
+                <button onClick={add}>+</button>
+                <button onClick={remove}>-</button>
             </div>
         )
     }
 }
+export default Home

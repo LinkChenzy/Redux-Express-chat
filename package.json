@@ -127,7 +127,18 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
     ]
   },
-  "proxy": "http://localhost:9070"
+  "proxy": "http://localhost:9070",
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.3.0"
+  }
 }

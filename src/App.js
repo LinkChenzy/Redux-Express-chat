@@ -1,20 +1,27 @@
-import React, { Component } from 'react';
+import React                from 'react';
 import Home                 from "containers/home";
-import { createStore }      from 'redux';
-import {demo_reducer,add,remove}         from 'reduxs/demo'
+import { createStore,applyMiddleware,compose }      from 'redux';
+import { Provider }         from 'react-redux';
+import thunk                from 'redux-thunk';
+import {demo_reducer} from "reduxs/demo";
 import './App.css';
 
 
-const store = createStore(demo_reducer);
+const reduxTool = window.devToolsExtension ? window.devToolsExtension() : f=>f;
+const store = createStore(demo_reducer,compose(
+    applyMiddleware(thunk),
+    reduxTool
+));
 
-class App extends Component {
-  render() {
+function App(props){
     return (
-      <div className="App" >
-          <Home store={store} add={add} remove={remove}/>
-      </div>
+      (<Provider store={store}>
+          <div className="App" >
+              <Home />
+          </div>
+      </Provider>)
+      
     );
-  }
 }
-
+store.subscribe(App)
 export default App;
