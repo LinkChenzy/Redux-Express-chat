@@ -10,7 +10,6 @@ import { Redirect } from "react-router-dom";
 )
 class Auth extends Component {
   render() {
-    console.log(this.props)
     return (
         <div>
             {this.props.isAuth?<Redirect to='/' /> : null}

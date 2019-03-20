@@ -8,7 +8,7 @@ app.get('/',(req,res)=>{
 
 // app.get('/userlist', UserController.getUserList);
 app.get('/userlist', (req, res) => {
-    res.send('hello world')
+    res.send({user:"Jone",age:20})
 });
 
 // 允许跨域

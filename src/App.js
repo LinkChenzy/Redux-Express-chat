@@ -3,11 +3,12 @@ import Home                 from "containers/home";
 import { createStore,applyMiddleware,compose }      from 'redux';
 import { Provider }         from 'react-redux';
 import thunk                from 'redux-thunk';
-import reducers 		 	from "./reduce";
+import reducers 		 				from "./reduce";
 import {
 	BrowserRouter, Route, Switch
 } from 'react-router-dom'
 import Auth 								from "containers/auth";
+import './axios/config';
 
 
 const reduxTool = window.devToolsExtension ? window.devToolsExtension() : f=>f;
@@ -19,7 +20,6 @@ const store = createStore(reducers, compose(
 function Nomatch(){
 	return <h1>404</h1>
 }
-console.log('store.getState()', store.getState())
 function App(props){
     return (
     (<Provider store={store}>
@@ -37,5 +37,4 @@ function App(props){
       
     );
 }
-store.subscribe(App)
 export default App;
