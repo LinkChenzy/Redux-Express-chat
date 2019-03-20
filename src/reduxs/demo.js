@@ -4,7 +4,6 @@ const REMOVE    = 'REMOVE';
 const initstate = 0;
 
 export function demo_reducer(state=initstate,action) {
-    console.log('action', state)
     switch (action.type) {
         case 'ADD':
             return state + 1;
@@ -17,12 +16,14 @@ export function demo_reducer(state=initstate,action) {
  
 export function add(data) {
     return {
-        type: ADD
+        type: ADD,
+        payload:data
     }
 }
 
 export function remove(data) {
     return {
         type: REMOVE,
+        payload: data
     }
 }
