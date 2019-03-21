@@ -1,15 +1,11 @@
 const express   = require('express');
 const app       = express();
+const ApiRouter = require('./api');
 // const { user: User } = require('./schema');
 const UserController = require('./controllers/user')
-app.get('/',(req,res)=>{
-    res.send('hello world')
-});
 
-// app.get('/userlist', UserController.getUserList);
-app.get('/userlist', (req, res) => {
-    res.send({user:"Jone",age:20})
-});
+
+app.use('/api', ApiRouter);
 
 // 允许跨域
 const allowCrossDomain = function (req, res, next) {
@@ -23,6 +19,6 @@ app.listen(9070,(err)=>{
     if(err){
         console.log('err', err)
     }else{
-        console.log('express node启动成功！')
+        console.log('express node 在9070启动成功！')
     }
 })
