@@ -1,10 +1,11 @@
 const express   = require('express');
 const app       = express();
+const bodyParse = require('body-parser');
+const cookieParse = require('cookie-parser');
 const ApiRouter = require('./api');
-// const { user: User } = require('./schema');
-const UserController = require('./controllers/user')
 
-
+app.use(cookieParse());
+app.use(bodyParse.json());
 app.use('/api', ApiRouter);
 
 // 允许跨域

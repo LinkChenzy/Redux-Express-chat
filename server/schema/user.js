@@ -9,26 +9,53 @@ module.exports = (sequelize, dataTypes) => {
                 primaryKey: true,
                 autoIncrement: true
             },
-            name: {
+            user: {
                 type: dataTypes.STRING(50),
                 // primaryKey: true,
                 allowNull: false,
                 unique: true
-            },
-            age: {
-                type: dataTypes.INTEGER(5),
-                allowNull: false,
             },
             password: {
                 type: dataTypes.STRING,
                 allowNull: false,
                 comment: '通过 bcrypt 加密后的密码'
             },
-            auth: {
-                type: dataTypes.TINYINT,
-                defaultValue: 2,
-                comment: '用户权限：1 - admin, 2 - 普通用户'
+            type: {
+                type: dataTypes.STRING,
+                allowNull: false,
+                comment: '用户类型'
             },
+            avatar: {
+                type: dataTypes.STRING,
+                allowNull: true,
+                comment: '头像'
+            },
+            desc: {
+                type: dataTypes.STRING,
+                allowNull: true,
+                comment: '个人简介或者职位简介'
+            },
+            title: {
+                type: dataTypes.STRING,
+                allowNull: true,
+                comment: '职位名'
+            },
+            // 只有boss拥有的字段
+            company: {
+                type: dataTypes.STRING,
+                allowNull: true,
+                comment: '公司的名称'
+            },
+            money: {
+                type: dataTypes.STRING,
+                allowNull: true,
+                comment: '薪资'
+            },
+            // auth: {
+            //     type: dataTypes.TINYINT,
+            //     defaultValue: 2,
+            //     comment: '用户权限：1 - admin, 2 - 普通用户'
+            // },
             createdAt: {
                 type: dataTypes.DATE,
                 defaultValue: dataTypes.NOW,
