@@ -1,22 +1,12 @@
-import Axios from 'axios';
-import { Toast } from "antd-mobile";
-// import { getRedirectPath } from 'util';
+import Axios                from 'axios';
+import { Toast }            from "antd-mobile";
+import { getRedirectPath }  from 'util';
 
-// 登录注册之后的跳转函数
-const getRedirectPath = ({userType,avatar})=>{
-    let url = (userType === 'boss') ? '/boss' : '/genius';
-    if(!avatar){
-        url += 'info';
-    }
-    return url;
-}
-const LOGIN_SUCCESS     = 'LOGIN_SUCCESS';
-const REGISTER_SUCCESS  = 'REGISTER_SUCCESS';
+const AUTH_SUCCESS      = 'AUTH_SUCCESS';
 const LOADDATA          = 'LOADDATA';
 const ERROR             = 'ERROR';
 const initState ={
     redirectTo: '',
-    isAuth:false,
     msg:'',
     user:'',
     password:'',
@@ -24,17 +14,9 @@ const initState ={
 };
 export function userRedux(state=initState,action) {
     switch (action.type) {
-        case LOGIN_SUCCESS:
+        case AUTH_SUCCESS:
             return {
                 ...state,
-                isAuth:true,
-                ...action.payload,
-                redirectTo: getRedirectPath(action.payload)
-            }
-        case REGISTER_SUCCESS:
-            return {
-                ...state,
-                isAuth:true,
                 ...action.payload,
                 redirectTo: getRedirectPath(action.payload)
             }
@@ -49,11 +31,8 @@ export function userRedux(state=initState,action) {
     }
 }
 
-export function LOGIN(data) {
-    return { type: LOGIN_SUCCESS, payload:data }
-}
-export function REGISTER(data) {
-    return { type: REGISTER_SUCCESS, payload: data }
+export function authSuccess(data) {
+    return { type: AUTH_SUCCESS, payload:data }
 }
 // 获取用户信息函数
 export function LOAD_FN(data){
@@ -77,7 +56,7 @@ export function register(data) {
         Axios.post('/api/user/register',data)
             .then(res=>{
                 if(res.status === 200 && res.data.code === 0){
-                    dispatch(REGISTER(data));
+                    dispatch(authSuccess(data));
                     Toast.success(res.data.msg)
                 }else{
                     dispatch(ERROR_FN(res.data.msg))
@@ -93,7 +72,22 @@ export function login(data) {
         Axios.post('/api/user/login', data)
             .then(res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(LOGIN(data));
+                    dispatch(authSuccess(res.data.list));
+                    Toast.success(res.data.msg)
+                } else {
+                    dispatch(ERROR_FN(res.data.msg));
+                    Error(res.data.msg)
+                }
+            })
+    }
+}
+// 更新用户个人信息
+export function infoUpdate(data) {
+    return dispatch => {
+        Axios.post('/api/user/infoupdate', data)
+            .then(res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    dispatch(authSuccess(res.data.list));
                     Toast.success(res.data.msg)
                 } else {
                     dispatch(ERROR_FN(res.data.msg));

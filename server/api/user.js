@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
 router.post('/login',(req,res)=>{
     let { user,password } = req.body;
     User.findOne({
-        attributes:['id','user','type','password'],
+        attributes:['id','user',['type','userType'],'password'],
         where:{user}
     }).then(doc=>{
         if(doc.password === MD5(password)){
@@ -51,8 +51,31 @@ router.post('/login',(req,res)=>{
             return res.json({code:1,msg:'密码不正确！'})
         }
     }).catch(err=>{
-        return res.json({code:10,msg:'用户不存在！'})
+        return res.json({code:10,msg:'用户不存在！',err})
     })
+})
+// 完善信息
+router.post('/infoupdate',(req,res)=>{
+    const { userid } = req.cookies
+    const { avatar,title,company,money,desc } = req.body;
+    if(!userid){return res.json({code:1,msg:'没有cookie'})}
+    else{
+        (async () => {
+            // 查出需要改的用户
+            const userList = await User.findOne({
+                where:{id:userid}
+            })
+            User.update({avatar,title,company,money,desc},{where:{id:userid}}).then(doc=>{
+                const list = Object.assign({},{
+                    user: userList.user, userType: userList.type
+                },req.body)
+                return res.json({code:0,msg:'更新成功！',list})
+            }).catch(err=>{
+                return res.json({code:1,msg:'更新失败！',err})
+            })
+        })();
+        
+    }
 })
 // 获取用户信息
 router.get('/info', (req, res) => {
@@ -65,7 +88,7 @@ router.get('/info', (req, res) => {
                 return res.json({code:1,msg:'用户不存在！'})
             }
         }).catch(err=>{
-            return res.json({code:1,msg:'后端出错了！'})
+            return res.json({code:1,msg:'后端出错了！',err})
         })
     }
     

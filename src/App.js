@@ -11,6 +11,8 @@ import Home 								from "containers/home";
 import Login 								from "containers/login";
 import Register 						from "containers/register";
 import AuthRoute 						from 'components/auth';
+import BossInfo 						from "containers/owninfo/boss";
+import GeniusInfo 					from 'containers/owninfo/genius';
 import './axios/config';
 
 
@@ -26,6 +28,9 @@ function Nomatch(){
 function Boss(){
 	return <h1>Boss</h1>
 }
+function Genius() {
+	return <h1>Genius</h1>
+}
 function App(props){
     return (
     (<Provider store={store}>
@@ -34,10 +39,13 @@ function App(props){
 				<AuthRoute></AuthRoute>
 				<Switch>
 					<Route path="/boss" component={Boss} />
+					<Route path="/genius" component={Genius} />
 					<Route path='/' exact component={Home} />
 					<Route path='/auth' component={Auth} />
 					<Route path='/login' component={Login} />
 					<Route path='/register' component={Register} />
+					<Route path='/bossinfo' component={BossInfo} />
+					<Route path='/geniusinfo' component={GeniusInfo} />
 					{/* 报错404页面 */}
 					<Route path="/:location" component={Nomatch} /> 
 				</Switch>

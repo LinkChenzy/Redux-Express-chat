@@ -19,7 +19,11 @@ code {
 .App{
 	box-sizing: border-box;
 	text-align: center;
-	padding: 15px;
+	/* padding: 15px; */
 	width: 100%;
 	background: #fff;
 }
+.am-button-primary{
+  cursor: pointer;
+}
+.am-list-header{text-align: left;}
