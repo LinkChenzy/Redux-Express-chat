@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Grid,List } from 'antd-mobile';
+import React, { Component } from 'react';
+import PropsTypes           from 'prop-types';
+import { Grid,List }        from 'antd-mobile';
 
 export default class AvatarSelect extends Component {
     state={}
@@ -28,4 +29,8 @@ export default class AvatarSelect extends Component {
 			</div>
 		)
 	}
+}
+// 规定父组件传给子组件的函数的类型 PropsTypes
+AvatarSelect.propTypes = {
+    selectAvatar:PropsTypes.func.isRequired
 }

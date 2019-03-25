@@ -45,6 +45,7 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-app-polyfill": "^0.2.2",
     "react-dev-utils": "^8.0.0",
@@ -136,10 +137,14 @@
         {
           "legacy": true
         }
-      ], ["import", {
-        "libraryName": "antd-mobile",
-        "style": "css"
-      }]
+      ],
+      [
+        "import",
+        {
+          "libraryName": "antd-mobile",
+          "style": "css"
+        }
+      ]
     ]
   },
   "proxy": "http://localhost:9070",
