@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
 router.post('/login',(req,res)=>{
     let { user,password } = req.body;
     User.findOne({
-        attributes:['id','user',['type','userType'],'password'],
+        attributes:['id','user',['type','userType'],'password','avatar'],
         where:{user}
     }).then(doc=>{
         if(doc.password === MD5(password)){
@@ -83,7 +83,7 @@ router.get('/info', (req, res) => {
     // 用户没有cookies
     if(!userid){return res.json({code:1,msg:'没有cookie'})}
     else{
-        User.findOne({where:{id:userid}}).then(doc => {
+        User.findOne({attributes:['id','user','type'],where:{id:userid}}).then(doc => {
             if(doc){return res.json({code:0,list:doc})}else{
                 return res.json({code:1,msg:'用户不存在！'})
             }

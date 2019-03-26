@@ -1,5 +1,5 @@
 import React, { Component } 					from 'react';
-import { NavBar, InputItem, WhiteSpace, TextareaItem, Button } from "antd-mobile";
+import { NavBar, InputItem, TextareaItem, Button } from "antd-mobile";
 import AvatarSelect 							from 'components/avatar-select';
 import { Redirect } 							from 'react-router-dom';
 import { connect } 								from 'react-redux';
