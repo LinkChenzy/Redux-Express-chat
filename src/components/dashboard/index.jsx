@@ -6,13 +6,10 @@ import { connect }          from 'react-redux';
 import Boss                 from 'components/dash_content/boss';
 import Genius               from 'components/dash_content/genius';
 // import { Msg }              from 'components/dash_content/msg';
-// import { User }             from 'components/dash_content/user';
+import User                 from 'components/dash_content/user';
 
 function Msg() {
     return <h1>消息首页</h1>
-}
-function User() {
-    return <h1>个人user主页</h1>
 }
 
 @connect(

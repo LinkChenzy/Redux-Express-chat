@@ -87,7 +87,7 @@ router.get('/info', (req, res) => {
     // 用户没有cookies
     if(!userid){return res.json({code:1,msg:'没有cookie'})}
     else{
-        User.findOne({attributes:['id','user','type'],where:{id:userid}}).then(doc => {
+        User.findOne({attributes:['user', 'id', 'type', 'avatar', 'desc', 'company', 'money','title'],where:{id:userid}}).then(doc => {
             if(doc){return res.json({code:0,list:doc})}else{
                 return res.json({code:1,msg:'用户不存在！'})
             }

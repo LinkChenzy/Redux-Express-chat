@@ -37,6 +37,10 @@ code {
 .am-card-footer .am-card-footer-extra {
   text-align: left;
 }
+.logout-btn{margin-bottom: 50px;}
+.logout-btn .am-list-body{
+  border: none;
+}
 /* footer */
 .am-tab-bar-bar .am-tab-bar-tab {
     cursor: pointer;
