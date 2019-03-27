@@ -5,25 +5,15 @@ import { withRouter }       from 'react-router-dom';
 
 @withRouter
 class NavFooter extends Component {
-    // static propTypes = {
-    //     data: PropTypes.array.isRequired
-    // }
     constructor(props){
         super(props)
         this.state={
             // navList:this.props.data.filter(v=>!v.hide)
         }
     }
-
     render() {
-        const propsData = this.props.data;
-        const navList   = propsData.filter(v=>!v.hide);
-        
-
-        console.log('data', propsData)
-        console.log('nav',navList)
-
-        const { pathname } = this.props.location;
+        const navList       = this.props.data.filter(v=>!v.hide);
+        const { pathname }  = this.props.location;
         return (
             <div>
                 <TabBar>
@@ -50,7 +40,7 @@ class NavFooter extends Component {
         )
     }
 }
-// 规定父组件传给子组件的函数的类型 PropsTypes
+// 规定父组件传给子组件的函数的类型 PropTypes
 NavFooter.propTypes = {
     data: PropTypes.array.isRequired
 }

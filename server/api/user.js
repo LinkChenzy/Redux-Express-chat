@@ -6,9 +6,13 @@ const { user: User } = require('../schema');
 
 // 获取所有的用户列表
 router.get('/list',(req,res)=>{
+    const { type } = req.query;
     // 用户没有cookies
-    User.findAll().then(list => {
-        return res.json(list)
+    User.findAll({
+        attributes: ['user', 'id', 'type', 'avatar', 'desc', 'company', 'money'],
+        where:{type}
+    }).then(list => {
+        return res.json({code:0,list})
     })
 })
 // 注册

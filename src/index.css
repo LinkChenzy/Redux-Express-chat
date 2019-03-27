@@ -28,6 +28,15 @@ code {
 }
 .am-list-header{text-align: left;}
 
+
+/* genius list */
+.genius-card .am-card-body{
+  text-align: left;
+}
+.am-card-footer .am-card-footer-content,
+.am-card-footer .am-card-footer-extra {
+  text-align: left;
+}
 /* footer */
 .am-tab-bar-bar .am-tab-bar-tab {
     cursor: pointer;
