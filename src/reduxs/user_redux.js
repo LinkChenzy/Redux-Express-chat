@@ -10,7 +10,7 @@ const initState ={
     msg:'',
     user:'',
     password:'',
-    userType:''
+    type:''
 };
 export function userRedux(state=initState,action) {
     switch (action.type) {
@@ -73,7 +73,7 @@ export function login(data) {
             .then(res => {
                 if (res.status === 200 && res.data.code === 0) {
                     dispatch(authSuccess(res.data.list));
-                    Toast.success(res.data.msg)
+                    // Toast.success(res.data.msg)
                 } else {
                     dispatch(ERROR_FN(res.data.msg));
                     Error(res.data.msg)

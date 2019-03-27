@@ -22,7 +22,8 @@ function User() {
 class Dashboard extends Component {
     render() {
         const user      = this.props.userRedux;
-        // console.log(user.type === 'boss')
+        console.log('user', user)
+        console.log(user.type === 'boss')
         const pathname  = this.props.location.pathname;
         const navList   = [
             { path:'/boss',  text:'牛人', icon:'boss',title:'牛人列表',component:Boss,hide:user.type === 'genius' },

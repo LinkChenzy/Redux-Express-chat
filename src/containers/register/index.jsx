@@ -12,7 +12,7 @@ const RadioItem = Radio.RadioItem;
 )
 class Register extends Component {
     state = {
-        userType:'genius'
+        type:'genius'
     }
     // 注册提交按钮
     handleRegister= ()=>{
@@ -30,13 +30,13 @@ class Register extends Component {
     }
     // 切换选择角色
     handRadio = (type)=>{
-        this.setState({ userType:type })
+        this.setState({ type })
     }
     login= ()=>{
         this.props.history.push('/login')
 	}
     render() {
-        const { userType } = this.state;
+        const { type } = this.state;
         const { redirectTo } = this.props;
         const RadioConfig = [
             { value: 0, label: 'genius' },
@@ -61,7 +61,7 @@ class Register extends Component {
                     >Confirm</InputItem>
                     <WhiteSpace />
                     {RadioConfig.map(i => (
-                        <RadioItem key={i.value} checked={userType === i.label} onChange={() => this.handRadio(i.label)}>
+                        <RadioItem key={i.value} checked={type === i.label} onChange={() => this.handRadio(i.label)}>
                             {i.label}
                         </RadioItem>
                     ))}

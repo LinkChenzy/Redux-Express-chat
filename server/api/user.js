@@ -13,7 +13,7 @@ router.get('/list',(req,res)=>{
 })
 // 注册
 router.post('/register', (req, res) => {
-    let { user,password,userType } = req.body;
+    let { user,password,type } = req.body;
     // 查询用户名是否重复
     User.findOne({
             where: { user }
@@ -24,7 +24,7 @@ router.post('/register', (req, res) => {
             User.create({
                     user,
                     password: MD5(password),
-                    type: userType
+                    type: type
                 }).then(doc => {
                     res.cookie("userid", doc.id);
                     return res.json({code:0,msg:"注册成功！"})
@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
 router.post('/login',(req,res)=>{
     let { user,password } = req.body;
     User.findOne({
-        attributes:['id','user',['type','userType'],'password','avatar'],
+        attributes:['id','user',['type','type'],'password','avatar'],
         where:{user}
     }).then(doc=>{
         if(doc.password === MD5(password)){
@@ -67,7 +67,7 @@ router.post('/infoupdate',(req,res)=>{
             })
             User.update({avatar,title,company,money,desc},{where:{id:userid}}).then(doc=>{
                 const list = Object.assign({},{
-                    user: userList.user, userType: userList.type
+                    user: userList.user, type: userList.type
                 },req.body)
                 return res.json({code:0,msg:'更新成功！',list})
             }).catch(err=>{

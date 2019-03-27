@@ -1,8 +1,8 @@
 
 // 页面跳转函数
-export function getRedirectPath({userType,avatar}){
-    console.log(userType,avatar)
-    let url = (userType === 'boss') ? '/boss' : '/genius';
+export function getRedirectPath({type,avatar}){
+    console.log(type,avatar)
+    let url = (type === 'boss') ? '/boss' : '/genius';
     if(!avatar){
         url += 'info';
     }
