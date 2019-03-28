@@ -12,6 +12,7 @@ import Login 								from "containers/login";
 import Register 						from "containers/register";
 import AuthRoute 						from 'components/auth';
 import BossInfo 						from "containers/owninfo/boss";
+import Chat									from "containers/chat";
 import GeniusInfo 					from 'containers/owninfo/genius';
 import Dashboard 						from 'components/dashboard';
 import './axios/config';
@@ -42,6 +43,7 @@ function App(props){
 					<Route path='/register' component={Register} />
 					<Route path='/bossinfo' component={BossInfo} />
 					<Route path='/geniusinfo' component={GeniusInfo} />
+					<Route path='/chat/:user' component={Chat} />
 					{/* 4个页面：boss,genius,msg,home */}
 					<Route component={ Dashboard } />
 					{/* 报错404页面 */}

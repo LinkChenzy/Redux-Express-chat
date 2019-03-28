@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { Card,WhiteSpace,WingBlank } from 'antd-mobile';
+import { withRouter } from 'react-router-dom'
 
+@withRouter
 class UserCard extends Component {
+    onChangeChat=(v)=>{
+        console.log(v)
+        this.props.history.push(`/chat/${v.user}`)
+    }
     render() {
         const data = this.props.userList;
         return (
@@ -11,7 +17,7 @@ class UserCard extends Component {
                         v.avatar ? 
                         <div className="genius-card" key={i}>
                             <WhiteSpace size="lg" />
-                            <Card key={v.id}>
+                            <Card key={v.id} onClick={()=>this.onChangeChat(v)}>
                                 <Card.Header
                                     title={v.user}
                                     thumb={require(`../img/${v.avatar}.png`)}

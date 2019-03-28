@@ -1,8 +1,17 @@
 const express   = require('express');
 const app       = express();
 const bodyParse = require('body-parser');
-const cookieParse = require('cookie-parser');
-const ApiRouter = require('./api');
+const cookieParse   = require('cookie-parser');
+const ApiRouter     = require('./api');
+const server        = require('http').Server(app);
+const io            = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+    socket.on('sendmsg',(data)=>{
+        console.log(data)
+        socket.emit('recemsg',{msg:data.text})
+    })
+});
 
 app.use(cookieParse());
 app.use(bodyParse.json());
@@ -16,7 +25,7 @@ const allowCrossDomain = function (req, res, next) {
     next();
 }
 app.use(allowCrossDomain);
-app.listen(9070,(err)=>{
+server.listen(9070, (err) => {
     if(err){
         console.log('err', err)
     }else{

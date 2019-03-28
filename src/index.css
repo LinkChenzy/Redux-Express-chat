@@ -14,7 +14,9 @@ code {
 }
 #root{
 	width: 375px;
-	margin: 20px auto;
+  margin: 20px auto;
+  min-height: 400px;
+  position: relative;
 }
 .App{
 	box-sizing: border-box;
@@ -44,4 +46,29 @@ code {
 /* footer */
 .am-tab-bar-bar .am-tab-bar-tab {
     cursor: pointer;
+}
+
+/* 聊天页面 */
+#chat-page .chat-me .am-list-extra {
+  flex-basis: auto;
+}
+
+#chat-page .chat-me .am-list-content {
+  padding-right: 15px;
+  text-align: right;
+}
+
+#chat-page .am-grid-icon {
+  display: none;
+}
+
+#chat-page .am-grid-text {
+  margin-top: 0;
+}
+
+.stick-footer {
+  z-index: 10;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

@@ -2,10 +2,11 @@ const Express   = require('express');
 const router    = Express.Router();
 const Mutil     = require('../util');
 const MD5       = Mutil.MD5;
-const { user: User } = require('../schema');
-
+const { user: User,chat:Chat } = require('../schema');
+Chat.sync()
 // 获取所有的用户列表
 router.get('/list',(req,res)=>{
+    
     const { type } = req.query;
     // 用户没有cookies
     User.findAll({
