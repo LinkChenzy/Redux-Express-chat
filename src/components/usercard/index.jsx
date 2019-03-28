@@ -9,7 +9,7 @@ class UserCard extends Component {
                 {data.map((v,i)=>{
                     return (
                         v.avatar ? 
-                        <div className="genius-card">
+                        <div className="genius-card" key={i}>
                             <WhiteSpace size="lg" />
                             <Card key={v.id}>
                                 <Card.Header
@@ -19,7 +19,7 @@ class UserCard extends Component {
                                 />
                                 <Card.Body>
                                     { v.desc && v.desc.split('\n').map(v=>{
-                                        return <div>{v}</div>
+                                        return <div key={v}>{v}</div>
                                     })}
                                 </Card.Body>
                                 {v.company && <Card.Footer content={v.company} extra={<div>薪资：{v.money}</div>} />}

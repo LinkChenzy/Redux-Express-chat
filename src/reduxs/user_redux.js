@@ -3,13 +3,13 @@ import { Toast }            from "antd-mobile";
 import { getRedirectPath }  from 'util';
 
 const AUTH_SUCCESS      = 'AUTH_SUCCESS';
+const LOGOUT            = 'LOGOUT';
 const LOADDATA          = 'LOADDATA';
 const ERROR             = 'ERROR';
 const initState ={
     redirectTo: '',
     msg:'',
     user:'',
-    password:'',
     type:''
 };
 export function userRedux(state=initState,action) {
@@ -24,6 +24,8 @@ export function userRedux(state=initState,action) {
             return {
                 ...state,isAuth: true,...action.payload,
             }
+        case LOGOUT:
+            return {...initState,redirectTo:'/login'}
         case ERROR:
             return {...state,isAuth:false,msg:action.msg}
         default: 
@@ -37,6 +39,10 @@ export function authSuccess(data) {
 // 获取用户信息函数
 export function LOAD_FN(data){
     return { type:LOADDATA,payload:data}
+}
+// 退出登录
+export function logout(){
+    return { type:LOGOUT }
 }
 export function ERROR_FN(msg) {
     return { msg,type:ERROR }

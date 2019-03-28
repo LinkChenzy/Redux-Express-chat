@@ -4,46 +4,42 @@ import { InputItem,List,WingBlank,WhiteSpace,Button,Toast } from 'antd-mobile';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from 'reduxs/user_redux';
+import Formhoc from 'components/form_HOC'
  
+
 @connect(
     state=>state.userRedux,
     { login }
 )
+@Formhoc
 class Login extends Component {
-	constructor(props){
-		super(props)
-		this.state={
-		}
-	}
 	// 注册提交按钮
     handleLogin= ()=>{
-        const { user,password } = this.state;
+        const { user,password } = this.props.state;
         if(!user || !password ){
             return Toast.fail('用户名密码不能为空！')
         }else{
-            this.props.login(this.state)
+            this.props.login(this.props.state)
         }
     }
 	register= ()=>{
+		console.log(this.props)
         this.props.history.push('/register')
 	}
-	handValue = (key,v)=>{
-        this.setState({ [key]:v });
-    }
 	render() {
 		let { redirectTo } = this.props;
 		return (
 			<div>
-				{ redirectTo ? <Redirect to={ redirectTo } />:null }
+				{ (redirectTo && redirectTo!=='/login') ? <Redirect to={ redirectTo } />:null }
 				<Logo />
 				<h3>Login</h3>
 				<List>
 					<InputItem clear placeholder="username" 
-                        onChange={v=>this.handValue('user',v)}
+                        onChange={v=>this.props.handValue('user',v)}
                     >Username</InputItem>
 					<WhiteSpace />
                     <InputItem clear type="password" placeholder="******" 
-                        onChange={v=>this.handValue('password',v)}
+                        onChange={v=>this.props.handValue('password',v)}
                     >Password</InputItem>
 				</List>
 				<WhiteSpace />

@@ -4,39 +4,35 @@ import Logo from "components/logo";
 import { InputItem,List,WingBlank,WhiteSpace,Button,Radio,Toast } from 'antd-mobile'
 import { connect } from 'react-redux';
 import { register } from 'reduxs/user_redux';
+import Formhoc from 'components/form_HOC'
  
 const RadioItem = Radio.RadioItem;
 @connect(
     state=>state.userRedux,
     { register }
 )
+@Formhoc
 class Register extends Component {
-    state = {
-        type:'genius'
+    componentDidMount(){
+        this.props.handValue('type','genius')
     }
     // 注册提交按钮
     handleRegister= ()=>{
-        const { user,password,confirmpwd } = this.state;
+        const { user,password,confirmpwd } = this.props.state;
         if(!user || !password ){
             return Toast.fail('用户名密码不能为空！')
         }else if(password !== confirmpwd ){
             return Toast.fail('两次输入密码不一致！')
         }else{
-            this.props.register(this.state)
+            this.props.register(this.props.state)
         }
     }
-    handValue = (key,v)=>{
-        this.setState({ [key]:v });
-    }
-    // 切换选择角色
-    handRadio = (type)=>{
-        this.setState({ type })
-    }
+    
     login= ()=>{
         this.props.history.push('/login')
 	}
     render() {
-        const { type } = this.state;
+        const { type } = this.props.state;
         const { redirectTo } = this.props;
         const RadioConfig = [
             { value: 0, label: 'genius' },
@@ -49,19 +45,19 @@ class Register extends Component {
                 <h3>Register</h3>
                 <List>
                     <InputItem clear placeholder="username" 
-                        onChange={v=>this.handValue('user',v)}
+                        onChange={v=>this.props.handValue('user',v)}
                     >Username</InputItem>
 					<WhiteSpace />
                     <InputItem clear type="password" placeholder="******" 
-                        onChange={v=>this.handValue('password',v)}
+                        onChange={v=>this.props.handValue('password',v)}
                     >Password</InputItem>
                     <WhiteSpace />
                     <InputItem clear type="password" placeholder="******" 
-                        onChange={v=>this.handValue('confirmpwd',v)}
+                        onChange={v=>this.props.handValue('confirmpwd',v)}
                     >Confirm</InputItem>
                     <WhiteSpace />
                     {RadioConfig.map(i => (
-                        <RadioItem key={i.value} checked={type === i.label} onChange={() => this.handRadio(i.label)}>
+                        <RadioItem key={i.value} checked={type === i.label} onChange={() => this.props.handRadio(i.label)}>
                             {i.label}
                         </RadioItem>
                     ))}
