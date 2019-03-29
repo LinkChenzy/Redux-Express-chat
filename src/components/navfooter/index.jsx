@@ -14,6 +14,7 @@ class NavFooter extends Component {
     render() {
         const navList       = this.props.data.filter(v=>!v.hide);
         const { pathname }  = this.props.location;
+        const badge = this.props.badge;
         return (
             <div>
                 <TabBar>
@@ -21,6 +22,7 @@ class NavFooter extends Component {
                         navList.map(v=>{
                             return (
                                 <TabBar.Item
+                                    badge={v.path === '/msg'?badge:0}
                                     title={v.text}
                                     key={v.text}
                                     icon={{uri:require(`./img/${v.icon}.png`)}}

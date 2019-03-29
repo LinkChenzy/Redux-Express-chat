@@ -25,7 +25,7 @@ module.exports = (sequelize, dataTypes) => {
             read: {
                 type: dataTypes.BOOLEAN,
                 allowNull: true,
-                default:false,
+                default:'false',
                 comment: '是否已可读'
             },
             content: {

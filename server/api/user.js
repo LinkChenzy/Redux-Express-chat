@@ -3,10 +3,9 @@ const router    = Express.Router();
 const Mutil     = require('../util');
 const MD5       = Mutil.MD5;
 const { user: User,chat:Chat } = require('../schema');
-Chat.sync()
+
 // 获取所有的用户列表
 router.get('/list',(req,res)=>{
-    
     const { type } = req.query;
     // 用户没有cookies
     User.findAll({
@@ -95,8 +94,13 @@ router.get('/info', (req, res) => {
         }).catch(err=>{
             return res.json({code:1,msg:'后端出错了！',err})
         })
-    }
-    
+    }  
 })
 
+router.get('/chat',(req,res)=>{
+    const { userid } = req.cookies;
+    Chat.findAll().then(doc=>{
+        return res.json({code:0,list:doc})
+    })
+})
 module.exports = router;

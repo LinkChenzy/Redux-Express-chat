@@ -5,8 +5,7 @@ import { withRouter } from 'react-router-dom'
 @withRouter
 class UserCard extends Component {
     onChangeChat=(v)=>{
-        console.log(v)
-        this.props.history.push(`/chat/${v.user}`)
+        this.props.history.push(`/chat/${v.id}`)
     }
     render() {
         const data = this.props.userList;

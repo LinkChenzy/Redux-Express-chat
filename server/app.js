@@ -5,11 +5,34 @@ const cookieParse   = require('cookie-parser');
 const ApiRouter     = require('./api');
 const server        = require('http').Server(app);
 const io            = require('socket.io')(server);
+const { user: User,chat:Chat } = require('./schema');
+
+// 判断是否存在这个表，没有则创建新的
+Chat.sync({
+    force: false
+}).then(() => {
+    console.log("[Chat is success]");
+}).catch(e=>{ 
+    Chat.sync();
+})
+User.sync({
+    force: false
+}).then(() => {
+    console.log("[User is success]");
+}).catch(e => {
+    User.sync();
+})
 
 io.on('connection', function (socket) {
     socket.on('sendmsg',(data)=>{
-        console.log(data)
-        socket.emit('recemsg',{msg:data.text})
+        const {from,to,msg} = data;
+        const chatid = [from,to].sort().join('_');
+        Chat.create({chatid,from,to,content:msg}).then(doc=>{
+            const _doc = Object.assign(doc,{read:false})
+            io.emit('recemsg', _doc)
+        }).catch(e=>{
+            console.log('e', e)
+        })
     })
 });
 

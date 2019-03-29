@@ -1,9 +1,12 @@
-import React from 'react';
-import { List,InputItem } from 'antd-mobile';
-import io from 'socket.io-client';
+import React                from 'react';
+import { List,InputItem,NavBar,Icon }   from 'antd-mobile';
+import { connect }          from 'react-redux'
+import { getChatList, sendMsg, receMsg } from 'reduxs/chat_redux'
 
-const socket = io('ws://localhost:9070');
-
+@connect(
+    state=>state,
+    { getChatList, sendMsg, receMsg }
+)
 class Chat extends React.Component{
     constructor(props){
         super(props)
@@ -12,25 +15,56 @@ class Chat extends React.Component{
         }
     }
     componentDidMount(){
-        socket.on('recemsg',(data)=>{
-            console.log(data)
-            this.setState({
-                msg:[...this.state.msg,data]
-            })
-        })
+        this.props.getChatList()
+        this.props.receMsg()
     }
     handleSend=()=>{
-        socket.emit('sendmsg',{text:this.state.text})
+        const from = this.props.userRedux.id;
+        const to = this.props.match.params.user;
+        const msg = this.state.text;
+        this.props.sendMsg({from,to,msg});
         this.setState({text:''})
-        console.log(this.state)
     }
     render(){
-        const { text,msg } = this.state;
+        const msgList   = this.props.chatRedux.chatmsg;
+        const { text }  = this.state;
+        const Item      = List.Item;
+        // 当前用户的id
+        const userid    = this.props.userRedux.id
+        // 目标用户的id
+        // const targetId = this.props.match.params.user;
         return (
-            <div>
-                {msg.map((v,i)=>{
-                    return <p key={i}>{v.msg}</p>
+            <div id='chat-page'>
+                <NavBar
+                    mode="dark"
+                    icon={<Icon type="left" />}
+                    onLeftClick={() => {
+                        this.props.history.goBack()
+                    }}
+                >
+                    正在和:{this.props.match.params.user} 聊天
+                </NavBar>
+
+                {msgList.map(v => {
+                    // const avatar = require(`../img/${users[v.from].avatar}.png`)
+                    return v.from === userid ? (
+                        <List key={v.id}>
+                            <Item
+                                className='chat-me'
+                                // thumb={avatar}
+                            >我发的：{v.content}</Item>
+                        </List>
+
+                    ) : (
+                            <List key={v.id}>
+                                <Item
+                                    // extra={<img alt='头像' src={avatar} />}
+                                >对方发的：{v.content}</Item>
+                            </List>
+
+                        )
                 })}
+                
                 <div className='stick-footer'>
                     <List>
                         <InputItem

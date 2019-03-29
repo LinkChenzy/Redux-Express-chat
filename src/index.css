@@ -17,6 +17,7 @@ code {
   margin: 20px auto;
   min-height: 400px;
   position: relative;
+  background: #fff;
 }
 .App{
 	box-sizing: border-box;

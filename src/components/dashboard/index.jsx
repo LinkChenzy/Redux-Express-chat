@@ -7,15 +7,20 @@ import Boss                 from 'components/dash_content/boss';
 import Genius               from 'components/dash_content/genius';
 // import { Msg }              from 'components/dash_content/msg';
 import User                 from 'components/dash_content/user';
-
+import { getChatList,receMsg } from 'reduxs/chat_redux'
 function Msg() {
     return <h1>消息首页</h1>
 }
 
 @connect(
-    state=>state
+    state=>state,
+    { getChatList,receMsg }
 )
 class Dashboard extends Component {
+    componentDidMount(){
+        this.props.getChatList()
+        this.props.receMsg()
+    }
     render() {
         const user      = this.props.userRedux;
         const pathname  = this.props.location.pathname;
@@ -35,7 +40,7 @@ class Dashboard extends Component {
                         })}
                     </Switch>
                 </div>
-                <NavFooter data={navList}/>
+                <NavFooter data={navList} badge={this.props.chatRedux.unread}/>
             </div>
         )
     }
