@@ -1,6 +1,8 @@
 const Express   = require('express');
 const router    = Express.Router();
 const Mutil     = require('../util');
+const Sequelize = require('sequelize')
+const Op        = Sequelize.Op;
 const MD5       = Mutil.MD5;
 const { user: User,chat:Chat } = require('../schema');
 
@@ -99,8 +101,18 @@ router.get('/info', (req, res) => {
 
 router.get('/chat',(req,res)=>{
     const { userid } = req.cookies;
-    Chat.findAll().then(doc=>{
-        return res.json({code:0,list:doc})
+    User.findAll({id:userid}).then(users=>{
+        let userDoc = {};
+        users.forEach(v=>{
+            userDoc[v.id] = {name:v.user,avatar:v.avatar}
+        })
+        Chat.findAll({where: {
+            [Op.or]: [{from: userid}, {to: userid}]
+        }}).then(doc=>{
+            return res.json({code:0,list:doc,users:userDoc})
+        })
+    }).catch(e=>{
+        return res.json({code:1,msg:'没有查询到',e})
     })
 })
 module.exports = router;

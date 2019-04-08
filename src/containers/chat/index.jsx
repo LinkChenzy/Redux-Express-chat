@@ -15,8 +15,10 @@ class Chat extends React.Component{
         }
     }
     componentDidMount(){
-        this.props.getChatList()
-        this.props.receMsg()
+        if (!this.props.chatRedux.chatmsg.length) {
+            this.props.getChatList()
+            this.props.receMsg()    
+        }
     }
     handleSend=()=>{
         const from = this.props.userRedux.id;
@@ -27,12 +29,17 @@ class Chat extends React.Component{
     }
     render(){
         const msgList   = this.props.chatRedux.chatmsg;
+        const users     = this.props.chatRedux.users;
+        const toId      = this.props.match.params.user; 
         const { text }  = this.state;
         const Item      = List.Item;
         // 当前用户的id
-        const userid    = this.props.userRedux.id
+        const userid    = this.props.userRedux.id;
         // 目标用户的id
         // const targetId = this.props.match.params.user;
+        if(!users[toId]){
+            return null
+        }
         return (
             <div id='chat-page'>
                 <NavBar
@@ -42,26 +49,24 @@ class Chat extends React.Component{
                         this.props.history.goBack()
                     }}
                 >
-                    正在和:{this.props.match.params.user} 聊天
+                    {users[toId].name}
                 </NavBar>
 
                 {msgList.map(v => {
-                    // const avatar = require(`../img/${users[v.from].avatar}.png`)
-                    return v.from === userid ? (
+                    const avatar = require(`../../components/img/${users[v.from].avatar}.png`)
+                    return Number(v.from) === userid ? (
                         <List key={v.id}>
                             <Item
                                 className='chat-me'
-                                // thumb={avatar}
-                            >我发的：{v.content}</Item>
+                                extra={<img alt='头像' src={avatar} />}                                
+                            >{v.content}</Item>
                         </List>
-
                     ) : (
                             <List key={v.id}>
                                 <Item
-                                    // extra={<img alt='头像' src={avatar} />}
-                                >对方发的：{v.content}</Item>
+                                    thumb={avatar}
+                                >{v.content}</Item>
                             </List>
-
                         )
                 })}
                 

@@ -11,16 +11,18 @@ const MSG_READ = 'MSG_READ';
 const ERROR = 'ERROR';
 const initState = {
     chatmsg: [],
+    users: {},
     unread:0
 };
 export function chatRedux(state = initState, action) {
-    console.log('action', action.payload)
+    // console.log('action', action.payload)
     switch (action.type) {
         case 'MSG_LIST':
             return {
                 ...state,
-                chatmsg: action.payload,
-                unread:action.payload.filter(v=>!v.read).length
+                users:action.payload.users,
+                chatmsg: action.payload.data,
+                unread:action.payload.data.filter(v=>!v.read).length
             }
         case 'MSG_RECE':
             return {
@@ -39,10 +41,10 @@ export function chatRedux(state = initState, action) {
     }
 }
 
-export function msgListSuccess(data) {
+export function msgListSuccess(data,users) {
     return {
         type: MSG_LIST,
-        payload: data
+        payload: {data,users}
     }
 }
 export function msgRecv(data) {
@@ -70,7 +72,7 @@ export function getChatList(type) {
         Axios.get('/api/user/chat')
             .then(res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(msgListSuccess(res.data.list));
+                    dispatch(msgListSuccess(res.data.list, res.data.users));
                 } else {
                     dispatch(ERROR_FN(res.data.msg))
                 }

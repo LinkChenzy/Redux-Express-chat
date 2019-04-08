@@ -18,8 +18,8 @@ function Msg() {
 )
 class Dashboard extends Component {
     componentDidMount(){
-        this.props.getChatList()
-        this.props.receMsg()
+        // this.props.getChatList()
+        // this.props.receMsg()
     }
     render() {
         const user      = this.props.userRedux;
