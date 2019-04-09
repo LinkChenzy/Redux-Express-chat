@@ -22,33 +22,36 @@ export function chatRedux(state = initState, action) {
                 ...state,
                 users:action.payload.users,
                 chatmsg: action.payload.data,
-                unread:action.payload.data.filter(v=>!v.read).length
+                unread: action.payload.data.filter(v => !v.read && Number(v.to) === action.payload.userid).length
             }
         case 'MSG_RECE':
+            // 发送人的id和当前的id相等时 未读消息加一
+            const n = action.payload.to === action.userid ? 1:0;
             return {
                 ...state,
                 chatmsg: [...state.chatmsg, action.payload],
-                unread: state.unread + 1
+                unread: state.unread + n
             }
-        case 'MSG_READ':
-            return {
-                ...state,
-                chatmsg: action.payload,
-                unread: action.payload.filter(v => !v.read).length
-            }
+        // case 'MSG_READ':
+        //     return {
+        //         ...state,
+        //         chatmsg: action.payload,
+        //         unread: action.payload.filter(v => !v.read).length
+        //     }
         default:
             return state;
     }
 }
 
-export function msgListSuccess(data,users) {
+export function msgListSuccess(data, users, userid) {
     return {
         type: MSG_LIST,
-        payload: {data,users}
+        payload: {data,users,userid}
     }
 }
-export function msgRecv(data) {
+export function msgRecv(data, userid) {
     return {
+        userid,
         type: MSG_RECE,
         payload: data
     }
@@ -68,11 +71,13 @@ export function ERROR_FN(msg) {
 
 // 获取消息列表
 export function getChatList(type) {
-    return dispatch => {
+    return (dispatch,getState )=> {
         Axios.get('/api/user/chat')
             .then(res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(msgListSuccess(res.data.list, res.data.users));
+                    // 获取原始state的用户id
+                    const userid = getState().userRedux.id;
+                    dispatch(msgListSuccess(res.data.list, res.data.users, userid));
                 } else {
                     dispatch(ERROR_FN(res.data.msg))
                 }
@@ -87,9 +92,11 @@ export function sendMsg({from,to,msg}) {
 }
 // 接受消息函数
 export function receMsg() {
-    return dispatch => {
+    return (dispatch,getState) => {
         socket.on('recemsg',data=>{
-            dispatch(msgRecv(data))
+            // 获取原始state的用户id
+            const userid = getState().userRedux.id;
+            dispatch(msgRecv(data, userid))
         })
     }
 }

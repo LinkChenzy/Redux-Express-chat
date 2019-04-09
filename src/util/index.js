@@ -34,3 +34,7 @@ export function setCookie(name, value, exdays) {
 export function clearCookie(name) {
     setCookie(name, "", -1); //修改2值都为空，天数为负1天就好了
 }
+
+export function getChatId(userId,targetId){
+    return [userId,targetId].sort().join('_');
+}

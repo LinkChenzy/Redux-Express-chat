@@ -1,7 +1,8 @@
 import React                from 'react';
-import { List,InputItem,NavBar,Icon }   from 'antd-mobile';
+import { List,InputItem,NavBar,Icon,Grid }   from 'antd-mobile';
 import { connect }          from 'react-redux'
 import { getChatList, sendMsg, receMsg } from 'reduxs/chat_redux'
+import { getChatId }                     from 'util';
 
 @connect(
     state=>state,
@@ -20,6 +21,11 @@ class Chat extends React.Component{
             this.props.receMsg()    
         }
     }
+    fixCarousel() {
+        setTimeout(function () {
+            window.dispatchEvent(new Event('resize'))
+        }, 0)
+    }
     handleSend=()=>{
         const from = this.props.userRedux.id;
         const to = this.props.match.params.user;
@@ -30,16 +36,22 @@ class Chat extends React.Component{
     render(){
         const msgList   = this.props.chatRedux.chatmsg;
         const users     = this.props.chatRedux.users;
-        const toId      = this.props.match.params.user; 
-        const { text }  = this.state;
+        const { text,showEmoji }  = this.state;
         const Item      = List.Item;
+        // 表情
+        const emoji = '😀 😃 😄 😁 😆 😅 😂 😊 😇 🙂 🙃 😉 😌 😍 😘 😗 😙 😚 😋 😜 😝 😛 🤑 🤗 🤓 😎 😏 😒 😞 😔 😟 😕 🙁 😣 😖 😫 😩 😤 😠 😡 😶 😐 😑 😯 😦 😧 😮 😲 😵 😳 😱 😨 😰 😢 😥 😭 😓 😪 😴 🙄 🤔 😬 🤐 😷 🤒 🤕 😈 👿 👹 👺 💩 👻 💀 ☠️ 👽 👾 🤖 🎃 😺 😸 😹 😻 😼 😽 🙀 😿 😾 👐 🙌 👏 🙏 👍 👎 👊 ✊ 🤘 👌 👈 👉 👆 👇 ✋  🖐 🖖 👋  💪 🖕 ✍️  💅 🖖 💄 💋 👄 👅 👂 👃 👁 👀 '
+            .split(' ')
+            .filter(v => v)
+            .map(v => ({ text: v }))
         // 当前用户的id
         const userid    = this.props.userRedux.id;
         // 目标用户的id
-        // const targetId = this.props.match.params.user;
-        if(!users[toId]){
+        const targetId = this.props.match.params.user;
+        if (!users[targetId]){
             return null
         }
+        // 筛选符合chatid的聊天记录
+        const msgs = msgList.filter(v=> v.chatid === getChatId(userid,targetId));
         return (
             <div id='chat-page'>
                 <NavBar
@@ -49,10 +61,10 @@ class Chat extends React.Component{
                         this.props.history.goBack()
                     }}
                 >
-                    {users[toId].name}
+                    {users[targetId].name}
                 </NavBar>
 
-                {msgList.map(v => {
+                {msgs.map(v => {
                     const avatar = require(`../../components/img/${users[v.from].avatar}.png`)
                     return Number(v.from) === userid ? (
                         <List key={v.id}>
@@ -78,10 +90,34 @@ class Chat extends React.Component{
                             onChange={v=>{this.setState({
                                 text:v
                             })}}
-                            extra={<span onClick={()=>this.handleSend()}>Send</span>}
+                            extra={
+                                <div>
+                                    <span
+                                        style={{ marginRight: 15 }}
+                                        onClick={() => {
+                                            this.setState({
+                                                showEmoji: !showEmoji
+                                            })
+                                            this.fixCarousel()
+                                        }}>😃</span>
+                                    <span onClick={()=>this.handleSend()}>Send</span>
+                                </div>
+                            }
                         >
                         </InputItem>
                     </List>
+                    { showEmoji ? <Grid
+                        data={emoji}
+                        columnNum={9}
+                        carouselMaxRow={4}
+                        isCarousel={true}
+                        onClick={el => {
+                            this.setState({
+                                text: text + el.text
+                            })
+
+                        }}
+                    /> : null}
                 </div>
             </div>
             
