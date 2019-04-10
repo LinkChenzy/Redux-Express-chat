@@ -26,7 +26,7 @@ export function chatRedux(state = initState, action) {
             }
         case 'MSG_RECE':
             // 发送人的id和当前的id相等时 未读消息加一
-            const n = action.payload.to === action.userid ? 1:0;
+            const n = Number(action.payload.to) === action.userid ? 1:0;
             return {
                 ...state,
                 chatmsg: [...state.chatmsg, action.payload],

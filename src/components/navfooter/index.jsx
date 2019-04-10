@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types'
+import { connect }          from 'react-redux'
 import { TabBar }           from 'antd-mobile';
 import { withRouter }       from 'react-router-dom';
 
 @withRouter
+@connect(
+    state => state.chatRedux
+)
 class NavFooter extends Component {
     constructor(props){
         super(props)
@@ -14,7 +18,7 @@ class NavFooter extends Component {
     render() {
         const navList       = this.props.data.filter(v=>!v.hide);
         const { pathname }  = this.props.location;
-        const badge = this.props.badge;
+        const badge = this.props.unread;
         return (
             <div>
                 <TabBar>

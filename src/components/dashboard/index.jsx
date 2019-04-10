@@ -5,12 +5,9 @@ import { NavBar }           from 'antd-mobile';
 import { connect }          from 'react-redux';
 import Boss                 from 'components/dash_content/boss';
 import Genius               from 'components/dash_content/genius';
-// import { Msg }              from 'components/dash_content/msg';
+import Msg                  from 'components/dash_content/msg';
 import User                 from 'components/dash_content/user';
 import { getChatList,receMsg } from 'reduxs/chat_redux'
-function Msg() {
-    return <h1>消息首页</h1>
-}
 
 @connect(
     state=>state,
@@ -42,7 +39,7 @@ class Dashboard extends Component {
                         })}
                     </Switch>
                 </div>
-                <NavFooter data={navList} badge={this.props.chatRedux.unread}/>
+                <NavFooter data={navList} />
             </div>
         )
     }
