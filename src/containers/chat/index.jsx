@@ -1,12 +1,12 @@
 import React                from 'react';
 import { List,InputItem,NavBar,Icon,Grid }   from 'antd-mobile';
 import { connect }          from 'react-redux'
-import { getChatList, sendMsg, receMsg } from 'reduxs/chat_redux'
+import { getChatList, sendMsg, receMsg, readMsg } from 'reduxs/chat_redux'
 import { getChatId }                     from 'util';
 
 @connect(
     state=>state,
-    { getChatList, sendMsg, receMsg }
+    { getChatList, sendMsg, receMsg, readMsg }
 )
 class Chat extends React.Component{
     constructor(props){
@@ -20,6 +20,10 @@ class Chat extends React.Component{
             this.props.getChatList()
             this.props.receMsg()    
         }
+    }
+    componentWillUnmount(){
+        const from = this.props.match.params.user;
+        this.props.readMsg(from)
     }
     fixCarousel() {
         setTimeout(function () {
@@ -53,7 +57,7 @@ class Chat extends React.Component{
         // 筛选符合chatid的聊天记录
         const msgs = msgList.filter(v=> v.chatid === getChatId(userid,targetId));
         return (
-            <div id='chat-page'>
+            <div id="chat-page">
                 <NavBar
                     mode="dark"
                     icon={<Icon type="left" />}
@@ -63,24 +67,26 @@ class Chat extends React.Component{
                 >
                     {users[targetId].name}
                 </NavBar>
-
-                {msgs.map(v => {
-                    const avatar = require(`../../components/img/${users[v.from].avatar}.png`)
-                    return Number(v.from) === userid ? (
-                        <List key={v.id}>
-                            <Item
-                                className='chat-me'
-                                extra={<img alt='头像' src={avatar} />}                                
-                            >{v.content}</Item>
-                        </List>
-                    ) : (
+                <div className="chat-content">
+                    {msgs.map(v => {
+                        const avatar = require(`../../components/img/${users[v.from].avatar}.png`)
+                        return Number(v.from) === userid ? (
                             <List key={v.id}>
                                 <Item
-                                    thumb={avatar}
+                                    className='chat-me'
+                                    extra={<img alt='头像' src={avatar} />}
                                 >{v.content}</Item>
                             </List>
-                        )
-                })}
+                        ) : (
+                                <List key={v.id}>
+                                    <Item
+                                        thumb={avatar}
+                                    >{v.content}</Item>
+                                </List>
+                            )
+                    })}
+                </div>
+                
                 
                 <div className='stick-footer'>
                     <List>

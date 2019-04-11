@@ -98,7 +98,7 @@ router.get('/info', (req, res) => {
         })
     }  
 })
-
+// 获取聊天记录
 router.get('/chat',(req,res)=>{
     const { userid } = req.cookies;
     User.findAll({id:userid}).then(users=>{
@@ -113,6 +113,19 @@ router.get('/chat',(req,res)=>{
         })
     }).catch(e=>{
         return res.json({code:1,msg:'没有查询到',e})
+    })
+})
+
+// 聊天记录已读状态
+router.post('/unread',(req,res)=>{
+    const { userid } = req.cookies;
+    const { from }   = req.body;
+    console.log('userid', userid)
+    console.log(from)
+    Chat.update({read:true},{where:{from,to:userid}}).then(doc=>{
+        res.json({code:0,num:doc[0]})
+    }).catch(e=>{
+        res.json({code:1,msg:'修改失败'})
     })
 })
 module.exports = router;

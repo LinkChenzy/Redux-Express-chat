@@ -32,12 +32,13 @@ export function chatRedux(state = initState, action) {
                 chatmsg: [...state.chatmsg, action.payload],
                 unread: state.unread + n
             }
-        // case 'MSG_READ':
-        //     return {
-        //         ...state,
-        //         chatmsg: action.payload,
-        //         unread: action.payload.filter(v => !v.read).length
-        //     }
+        case 'MSG_READ':
+            const { from,num } = action.payload;
+            return {
+                ...state,
+                chatmsg: state.chatmsg.map(v=>({...v,read:Number(from) === Number(v.from) ? true: v.read})),
+                unread: state.unread - num
+            }
         default:
             return state;
     }
@@ -61,6 +62,11 @@ export function receSuccess(data) {
         type: MSG_READ,
         payload: data
     }
+}
+
+// 修改已读消息
+export function readSuccess({from,userid,num}) {
+    return{ type:MSG_READ,payload:{from,userid,num} }
 }
 export function ERROR_FN(msg) {
     return {
@@ -97,6 +103,23 @@ export function receMsg() {
             // 获取原始state的用户id
             const userid = getState().userRedux.id;
             dispatch(msgRecv(data, userid))
+        })
+    }
+}
+
+// 已读消息
+export function readMsg(from) {
+    return (dispatch,getState)=>{
+        Axios.post('/api/user/unread',{from})
+        .then(res=>{
+            if(res.status === 200 && res.data.code === 0){
+                // 获取原始state的用户id
+                const userid = getState().userRedux.id;
+                dispatch(readSuccess({from, userid, num:res.data.num}));
+            }
+            else {
+                dispatch(ERROR_FN(res.data.msg))
+            }
         })
     }
 }
