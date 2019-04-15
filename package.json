@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/cli": "^7.4.3",
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
     "antd-mobile": "^2.2.9",
@@ -71,7 +72,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "server": "nodemon ./server/app.js"
+    "server": "cross-env NODE_ENV=test nodemon --exec babel-node ./server/app.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -129,7 +130,7 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+       "@babel/preset-env", "react-app"
     ],
     "plugins": [
       [
@@ -149,7 +150,10 @@
   },
   "proxy": "http://localhost:9070",
   "devDependencies": {
+    "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-decorators": "^7.3.0",
-    "babel-plugin-import": "^1.11.0"
+    "@babel/preset-env": "^7.4.3",
+    "babel-plugin-import": "^1.11.0",
+    "cross-env": "^5.2.0"
   }
 }

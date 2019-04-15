@@ -15,6 +15,7 @@ import BossInfo 						from "containers/owninfo/boss";
 import Chat									from "containers/chat";
 import GeniusInfo 					from 'containers/owninfo/genius';
 import Dashboard 						from 'components/dashboard';
+import Demo 								from 'containers/demo';
 import './axios/config';
 
 
@@ -35,8 +36,6 @@ function App(props){
 			<div className="App" >
 				<AuthRoute></AuthRoute>
 				<Switch>
-					{/* <Route path="/boss" component={Boss} />
-					<Route path="/genius" component={Genius} /> */}
 					<Route path='/' exact component={Home} />
 					<Route path='/auth' component={Auth} />
 					<Route path='/login' component={Login} />
@@ -44,6 +43,7 @@ function App(props){
 					<Route path='/bossinfo' component={BossInfo} />
 					<Route path='/geniusinfo' component={GeniusInfo} />
 					<Route path='/chat/:user' component={Chat} />
+					<Route path='/demo' component={ Demo } />
 					{/* 4个页面：boss,genius,msg,home */}
 					<Route component={ Dashboard } />
 					{/* 报错404页面 */}

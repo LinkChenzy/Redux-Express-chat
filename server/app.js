@@ -1,5 +1,7 @@
-const express   = require('express');
+import express from 'express';
+// const express   = require('express');
 const app       = express();
+const path      = require('path');
 const bodyParse = require('body-parser');
 const cookieParse   = require('cookie-parser');
 const ApiRouter     = require('./api');
@@ -48,6 +50,13 @@ const allowCrossDomain = function (req, res, next) {
     next();
 }
 app.use(allowCrossDomain);
+app.use(function (req, res, next) {
+    if (req.url.startsWith('/api/') || req.url.startsWith('/static/')) {
+        return next()
+    }
+    return res.sendFile(path.resolve('build/index.html'))
+})
+app.use('/', express.static(path.resolve('build')))
 server.listen(9070, (err) => {
     if(err){
         console.log('err', err)
