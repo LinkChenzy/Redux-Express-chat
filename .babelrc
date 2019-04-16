@@ -1,0 +1,30 @@
+{
+    "presets": [
+        "@babel/preset-env",
+        "react-app",
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ],
+        [
+            "import",
+            {
+                "libraryName": "antd-mobile",
+                "style": "css"
+            }
+        ],
+        ["module-resolver", {
+            "cwd": "babelrc",
+            "alias": {
+                "components": "./src/components",
+                "containers": "./src/containers",
+                "reduxs"    : "./src/reduxs",
+                "util"      : "./src/util"
+            }
+        }]
+    ]
+}

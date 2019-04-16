@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch,Route }     from 'react-router-dom';
+import { Switch, Route }     from 'react-router-dom';
 import NavFooter            from 'components/navfooter'
 import { NavBar }           from 'antd-mobile';
 import { connect }          from 'react-redux';
