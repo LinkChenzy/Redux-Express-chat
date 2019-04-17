@@ -1,5 +1,5 @@
 import React                from 'react';
-import { Route, Switch,Redirect } 	from 'react-router-dom'
+import { Route, Switch } 	from 'react-router-dom'
 // import Auth 								from "containers/auth";
 // import Home 								from "containers/home";
 import Login 							from "containers/login";
@@ -23,38 +23,32 @@ class App extends React.Component{
 			hasError: false
 		};
 	}
-	logComponentStackToMyService(info){
-		if(info){
-			this.setState({
-				hasError:true
-			})
-		}
-	}
 	componentDidCatch(error, info) {
 		console.log('error', error)
-		// Example "componentStack":
-		//   in ComponentThatThrows (created by App)
-		//   in ErrorBoundary (created by App)
-		//   in div (created by App)
-		//   in App
+		this.setState({
+			hasError: true
+		})
 		console.log('info.componentStack', info)
-		this.logComponentStackToMyService(info.componentStack);
 	}
 	render(){
-		return this.state.hasError ? <Redirect to='/login' />:(
+		return (
 			<div className="App" >
 				<AuthRoute></AuthRoute>
 				<Switch>
 					{/* <Route path='/' exact component={Home} /> */}
 					{/* <Route path='/auth' component={Auth} /> */}
 					<Route path='/login' component={Login} />
+					<Route path='/' exact component={Login} />
 					<Route path='/register' component={Register} />
 					<Route path='/bossinfo' component={BossInfo} />
 					<Route path='/geniusinfo' component={GeniusInfo} />
 					<Route path='/chat/:user' component={Chat} />
 					<Route path='/demo' component={ Demo } />
-					{/* 4个页面：boss,genius,msg,home */}
-					<Route component={ Dashboard } />
+					{/* 4个页面：boss,genius,msg,user */}
+					<Route path='/boss' component={ Dashboard } />
+					<Route path='/genius' component={ Dashboard } />
+					<Route path='/msg' component={ Dashboard } />
+					<Route path='/user' component={ Dashboard } />
 					{/* 报错404页面 */}
 					<Route path="/:location" component={Nomatch} /> 
 				</Switch>
